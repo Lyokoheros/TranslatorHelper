@@ -21,6 +21,22 @@
             </html>
             PAGE;
         }
+
+        public function Div($content, $class=NULL, $id=NULL)
+        {
+            $element = '<div';
+            if(isset($class))
+            {
+                $element = $element." class=\"$class\"";
+            }
+            if(isset($id))
+            {
+                $element = $element." id=\"$id\"";
+            }
+            $element = $element.">$content</div>";
+
+            return $element;
+        }
     }
 
 ?>

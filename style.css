@@ -1,28 +1,19 @@
-.titles 
+.title
 {
+    width: 30%;
+    text-align: center;
     font-size: large;
     font-weight: bold;
+    font-style: italic;
     padding: 20px;
 }
-.table
+.moduleTitle
 {
-    width: 50%;
-    text-align: center;
-    align-content: center;
-    border-color: gray;
-    border-style: outset;
-    border-width: 5px;
-    padding: 5px;
+    font-size: medium;
+    font-weight: bold;
+    padding: 10px;
 }
-
-
-.table-text
+.module
 {
-    color: darkslategrey;
-    border-width: 3px;
-    border-style: solid;
-    border-color: cadetblue;
-    align-self: center;
-    text-align: center;
     padding: 10px;
 }
