@@ -1,0 +1,28 @@
+.titles 
+{
+    font-size: large;
+    font-weight: bold;
+    padding: 20px;
+}
+.table
+{
+    width: 50%;
+    text-align: center;
+    align-content: center;
+    border-color: gray;
+    border-style: outset;
+    border-width: 5px;
+    padding: 5px;
+}
+
+
+.table-text
+{
+    color: darkslategrey;
+    border-width: 3px;
+    border-style: solid;
+    border-color: cadetblue;
+    align-self: center;
+    text-align: center;
+    padding: 10px;
+}
