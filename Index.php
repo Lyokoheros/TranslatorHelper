@@ -7,6 +7,10 @@
     
     $content = $Renderer->Div("Pomocnik Tłumacza", $class='title');
 
+
+    //$Renderer->renderErrorsMessages(); NOT IMPLEMENTED
+
+ 
     foreach($ModulesList as $ModuleClass) //$ModulesList specified in Module.php file
     {
         $Module = new $ModuleClass();

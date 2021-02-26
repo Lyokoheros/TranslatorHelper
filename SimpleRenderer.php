@@ -2,11 +2,18 @@
     class SimpleRenderer
     {
         protected $language="Pl";
+        protected $Errors = ['no base file', 'no add file', 'base file ext error', 'add file ext error'];
+        protected $ErrorMessages = [
+            'no base file' => '',
+            'no add file' => '',
+            'base file ext error' => '',
+            'add file ext error' => ''
+        ];
         
         public function RenderPage($title, $content)
         {
             Echo <<<PAGE
-            <!doctype html lang="Pl">
+            <!doctype html lang="$this->language">
             <html>
             <head>
                 <title>$title</title>
@@ -36,6 +43,12 @@
             $element = $element.">$content</div>";
 
             return $element;
+        }
+
+        public function renderErrorsMessages()
+        {
+            session_start();
+            //TO DO: Rendering error messages
         }
     }
 
