@@ -4,10 +4,10 @@
         protected $language="Pl";
         protected $Errors = ['no base file', 'no add file', 'base file ext error', 'add file ext error'];
         protected $ErrorMessages = [
-            'no base file' => '',
-            'no add file' => '',
-            'base file ext error' => '',
-            'add file ext error' => ''
+            'no base file' => 'Musisz podać plik bazowy!',
+            'no add file' => 'Musisz podać plik dodatkowy!',
+            'base file ext error' => 'Błędne rozszerzenie pliku bazowego',
+            'add file ext error' => 'Błędne rozszerzenie pliku dodatkowego'
         ];
         
         public function RenderPage($title, $content)
@@ -47,8 +47,20 @@
 
         public function renderErrorsMessages()
         {
+            $messages="";
             session_start();
-            //TO DO: Rendering error messages
+            foreach($this->Errors as $Error)
+            {
+                if(isset($_SESSION[$Error]))
+                {
+                    
+                    $message = $this->ErrorMessages[$Error];
+
+                    $messages = $messages."<script>alert('$message')</script>";
+                    unset($_SESSION[$Error]);
+                }
+            }
+            return $messages;
         }
     }
 

@@ -2,7 +2,7 @@
     require_once("Imodule.php");
     require_once("SubtitleLine.php");
 
-    session_start();
+    //session_start();
 
     class SubtitlesConnector implements IModule
     {
@@ -90,7 +90,7 @@
             }
 
         }
-
+        
         if(!isset($_FILES['AddSubtitleFile']))
         {
             $_SESSION['no add file']=true;
