@@ -96,7 +96,7 @@
             $first = true;
             foreach($lines as $line)
             {
-                if($first)//workaround for first line issue
+                if($first)//workaround for first line issue //TO DO: fixing  it
                 {
                     $subLine->number=$line;
                     $lasttype="number";
