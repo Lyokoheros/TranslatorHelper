@@ -3,7 +3,7 @@
     require_once("Modules/SubtitlesConnector.php");
 
     $ModulesList = [
-        "SubtitlesConnector"
+        'SubtitlesConnector'
     ];
 
 ?>

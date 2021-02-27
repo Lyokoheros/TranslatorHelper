@@ -9,7 +9,8 @@
 
 
     $content = $content.$Renderer->renderErrorsMessages();
-    //TO DO: Succes Messages
+    //TO DO: Succes Messages   
+    $content = $content.$Renderer->renderSuccesMessages($ModulesList);
  
     foreach($ModulesList as $ModuleClass) //$ModulesList specified in Module.php file
     {
@@ -25,6 +26,6 @@
 
 
 
-    $Renderer->renderPage("Pomocnik Tłumacza", $content);  
+    $Renderer->renderPage("Pomocnik Tłumacza", $content);
 
 ?>

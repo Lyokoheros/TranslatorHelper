@@ -2,7 +2,10 @@
     require_once("Imodule.php");
     require_once("SubtitleLine.php");
 
-    //session_start();
+    if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
 
     class SubtitlesConnector implements IModule
     {
@@ -17,7 +20,7 @@
                 <form action='Modules/SubtitlesConnector.php' method='post' enctype='multipart/form-data'>
                 Bazowy plik napisów: <input type='file' name='BaseSubtitleFile'><br>
                 Dodatkowy plik napisów: <input type='file' name='AddSubtitleFile'><br>
-                Naza pliku wynikowego: <input type='text' name='OutputFileName'><br> (bez rozszerzenia)
+                Naza pliku wynikowego: <input type='text' name='OutputFileName'> (bez rozszerzenia)<br>
                 <input type='submit' value='Połącz i zapisz na dysku'>
                 Uwaga - oba pliki powinny mieć kompatybilne sygnatury czasowe
                 </form>
@@ -83,6 +86,7 @@
 
             //saving the result in new file
             file_put_contents($this->getParentFolderPath()."\Outputs\\".$OutputName.".srt", $mergedSubs);
+            $_SESSION['SubtitlesConnector']=$OutputName.".srt"; //marking the results as succes - for displaying message (with string parameter)
 
         }
 

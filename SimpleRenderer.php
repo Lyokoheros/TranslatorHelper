@@ -9,6 +9,9 @@
             'base file ext error' => 'Błędne rozszerzenie pliku bazowego',
             'add file ext error' => 'Błędne rozszerzenie pliku dodatkowego'
         ];
+        protected $SuccesMessages = [
+            'SubtitlesConnector' => 'Połączony plik napisów zapisany jako: '
+        ];
         
         public function RenderPage($title, $content)
         {
@@ -45,10 +48,14 @@
             return $element;
         }
 
+
         public function renderErrorsMessages()
         {
             $messages="";
-            session_start();
+            if(!isset($_SESSION)) 
+            { 
+                session_start(); 
+            } 
             foreach($this->Errors as $Error)
             {
                 if(isset($_SESSION[$Error]))
@@ -62,6 +69,31 @@
             }
             return $messages;
         }
-    }
 
+        public function renderSuccesMessages($modules)
+        {
+            $messages="";
+            if(!isset($_SESSION)) 
+            { 
+                session_start(); 
+            } 
+            foreach($modules as $module)
+            {
+                if(isset($_SESSION[$module]))
+                {
+                    
+                    $message = $this->SuccesMessages[$module];
+                    if(gettype($_SESSION[$module])=='string')//if there is string paramter add it to the message
+                    {
+                        $message = $message.$_SESSION[$module];
+                    }
+                    $messages = $messages."<script>alert('$message')</script>";
+                    unset($_SESSION[$module]);
+                }
+            }
+            return $messages;
+        }           
+
+
+    }
 ?>
