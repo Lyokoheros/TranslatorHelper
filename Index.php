@@ -9,6 +9,7 @@
 
 
     $content = $content.$Renderer->renderErrorsMessages();
+    //TO DO: Succes Messages
  
     foreach($ModulesList as $ModuleClass) //$ModulesList specified in Module.php file
     {

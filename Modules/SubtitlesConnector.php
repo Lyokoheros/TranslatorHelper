@@ -24,11 +24,27 @@
             ";
         }
 
-        public function action($baseFile, $AddFile, $OutputName)
+        public function merge($baseFile, $addFile, $OutputName)
         {
-            $baseSubs = $this->parseSRT($baseFile);
-            $AddSubs = $this->parseSRT($AddFile);
-            var_dump($baseSubs);
+            $baseSubs = $this->parseSRT($baseFile['tmp_name']);
+            $addSubs = $this->parseSRT($addFile['tmp_name']);
+            
+            $lenght = (count($baseSubs)<count($addSubs)) ? count($addSubs) : count($baseSubs);
+
+
+            $mergedSubs="test\ntest\ntest2";
+            /*$subLine = new SubtitleLine();
+            for($i=0; $i<$lenght; $i++)
+            {
+                
+
+            }
+            */
+
+
+
+
+            file_put_contents($this->getParentFolderPath()."\Outputs\\".$OutputName.".srt", $mergedSubs);
 
         }
 
@@ -64,6 +80,19 @@
             }
             return $subs;
         }
+
+        protected function getParentFolderPath($path = NULL)
+        {
+            //current path by default
+            $path = (is_null($path)) ? getcwd() : $path;
+
+            $path = explode(DIRECTORY_SEPARATOR, $path);
+            unset($path[count($path)-1]);
+
+            $path = implode(DIRECTORY_SEPARATOR, $path);
+
+            return $path;
+        }
     }
 
 
@@ -78,7 +107,7 @@
         {
             $_SESSION['no base file']=true;
             $errorCount++;
-            echo "no base file<br>";
+            //echo "no base file<br>";
         }
         else //and then extension
         {
@@ -88,7 +117,7 @@
             {
                 $_SESSION['base file ext error']=true;
                 $errorCount++;
-                echo "base file ext error<br>";
+                //echo "base file ext error<br>";
             }
 
         }
@@ -97,7 +126,7 @@
         {
             $_SESSION['no add file']=true;
             $errorCount++;
-            echo "no add file<br>";
+            //echo "no add file<br>";
         }
         else
         {
@@ -108,16 +137,16 @@
             {
                 $_SESSION['add file ext error']=true;
                 $errorCount++;          
-                echo "add file ext error<br>";
+                //echo "add file ext error<br>";
             }   
         }
 
         if($errorCount==0)//oba pliki są poprawne
         {            
-            $Module->action($_FILES['BaseSubtitleFile'], $_FILES['AddSubtitleFile'], htmlentities($_POST['OutputFileName'])); 
+            $Module->merge($_FILES['BaseSubtitleFile'], $_FILES['AddSubtitleFile'], htmlentities($_POST['OutputFileName'])); 
         }
     
         unset($Module);
-        //header("Location: /TranslatorHelper/Index.php");
+        header("Location: /TranslatorHelper/Index.php");
     }  
 ?>
