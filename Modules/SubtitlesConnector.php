@@ -17,7 +17,7 @@
                 <form action='Modules/SubtitlesConnector.php' method='post' enctype='multipart/form-data'>
                 Bazowy plik napisów: <input type='file' name='BaseSubtitleFile'><br>
                 Dodatkowy plik napisów: <input type='file' name='AddSubtitleFile'><br>
-                Naza pliku wynikowego: <input type='text' name='OutputFileName'><br>
+                Naza pliku wynikowego: <input type='text' name='OutputFileName'><br> (bez rozszerzenia)
                 <input type='submit' value='Połącz i zapisz na dysku'>
                 Uwaga - oba pliki powinny mieć kompatybilne sygnatury czasowe
                 </form>
@@ -26,58 +26,116 @@
 
         public function merge($baseFile, $addFile, $OutputName)
         {
+            //parsing files
             $baseSubs = $this->parseSRT($baseFile['tmp_name']);
             $addSubs = $this->parseSRT($addFile['tmp_name']);
             
-            $lenght = (count($baseSubs)<count($addSubs)) ? count($addSubs) : count($baseSubs);
+            //choosing shorter length for loop
+            $length = (count($baseSubs)>count($addSubs)) ? count($addSubs) : count($baseSubs);
+            //and setting the longer Subs for complementing
+            $longer = (count($baseSubs)<count($addSubs)) ? $addSubs : $baseSubs;
 
+            $mergedSubs="";
+            //echo $length."<br>";
+            $i=0; //iterator will be needed after the lops ends
+            for(; $i<$length; $i++)
+            {   
 
-            $mergedSubs="test\ntest\ntest2";
-            /*$subLine = new SubtitleLine();
-            for($i=0; $i<$lenght; $i++)
-            {
+                //echo "<br><br>";
+                //echo $i."<br>";
+                //var_dump($baseSubs[$i]);
+                //echo "<br>";
+                //var_dump($addSubs[$i]);
+                //printing number and time stamp
+                $mergedSubs = $mergedSubs.$baseSubs[$i]->number.$baseSubs[$i]->time;
                 
-
+                //printing base Subs...
+                foreach($baseSubs[$i]->text as $subLine)
+                {
+                    $mergedSubs = $mergedSubs.$subLine;
+                }
+                
+                //...and the additional Subs
+                foreach($addSubs[$i]->text as $subLine)
+                {
+                    $mergedSubs = $mergedSubs.$subLine;
+                }
+                $mergedSubs = $mergedSubs."\n";
             }
-            */
 
+            //echo "Różne długośći";
+            //now we need lenght of the longer array
+            $length = count($longer);
+            //echo $length."<br>";
+            //to easily loop for the remaining elements of the array - if they are of equal lenght this loop will not start
+            for(;$i<$length; $i++)
+            {
+                //echo $i."<br>";   
+                //printing remaining Subs...
+                $mergedSubs = $mergedSubs.$longer[$i]->number."\n".$longer[$i]->time."\n";
+                                
+                foreach($longer[$i]->text as $subLine)
+                {
+                    $mergedSubs = $mergedSubs.$subLine."\n";
+                }
 
+            }  
 
-
+            //saving the result in new file
             file_put_contents($this->getParentFolderPath()."\Outputs\\".$OutputName.".srt", $mergedSubs);
 
         }
 
         protected function parseSRT($file)
         {
+            //echo "parsuję plik<br>";
             $lines = file($file, FILE_SKIP_EMPTY_LINES);
             $lasttype = null;
             $subs = array();
             $subLine = new SubtitleLine();
+            $first = true;
             foreach($lines as $line)
             {
-                if(is_numeric($line))
+                if($first)//workaround for first line issue
                 {
-                    if($lasttype=="text")
-                    {
-                        array_push($subs, $subLine); //adding previous line to returned array 
-                        $subLine = new SubtitleLine();
-                    }
                     $subLine->number=$line;
                     $lasttype="number";
+                    $first=false;
                 }
-                elseif (is_numeric($line[0]))//timestamps starts with number
-                {
-                    $subLine->time=$line;
-                    $lasttype="time";
+                else
+                {  
+                    if(is_numeric($line[0]) and !str_contains($line, ":")) //(is_numeric(preg_replace("/\s+/", "", $line))) changed to alternate method
+                    {
+                        
+                        if($lasttype=="text")
+                        {
+                            //echo "new object!<br>";
+                            array_push($subs, $subLine); //adding previous line to returned array 
+                            $subLine = new SubtitleLine();
+                        }
+                        $subLine->number=$line;
+                        $lasttype="number";
+                        //echo "numer: ";
+                    }
+                    elseif (is_numeric($line[0]))//timestamps starts with number
+                    {
+                        //echo "time: ";
+                        $subLine->time=$line;
+                        $lasttype="time";
+                    }
+                    elseif(!ctype_space($line)) //it's the text - empty lines are skipped
+                    {
+                        array_push($subLine->text, $line);//text can be multiple lines, so is stored in array
+                        $lasttype="text";
+                        //echo "text: ";
+                    }
+                    //var_dump($line);
+                    //echo "<br>";            
                 }
-                else //it's the text - empty lines are skipped
-                {
-                    array_push($subLine->text, $line);//text can be multiple lines, so is stored in array
-                    $lasttype="text";
-                }
-
             }
+            array_push($subs, $subLine);//adding last line
+
+            //var_dump($subs);
             return $subs;
         }
 
