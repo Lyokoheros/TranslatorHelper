@@ -74,10 +74,11 @@
         $errorCount=0;
 
         //checking it there are files uploaded, a
-        if(!isset($_FILES['BaseSubtitleFile']))
+        if(!isset($_FILES['BaseSubtitleFile']) or $_FILES['BaseSubtitleFile']['size']==0)
         {
             $_SESSION['no base file']=true;
             $errorCount++;
+            echo "no base file<br>";
         }
         else //and then extension
         {
@@ -87,14 +88,16 @@
             {
                 $_SESSION['base file ext error']=true;
                 $errorCount++;
+                echo "base file ext error<br>";
             }
 
         }
         
-        if(!isset($_FILES['AddSubtitleFile']))
+        if(!isset($_FILES['AddSubtitleFile']) or $_FILES['AddSubtitleFile']['size']==0)  
         {
             $_SESSION['no add file']=true;
             $errorCount++;
+            echo "no add file<br>";
         }
         else
         {
@@ -105,6 +108,7 @@
             {
                 $_SESSION['add file ext error']=true;
                 $errorCount++;          
+                echo "add file ext error<br>";
             }   
         }
 
@@ -114,6 +118,6 @@
         }
     
         unset($Module);
-        header("Location: /TranslatorHelper/Index.php");
+        //header("Location: /TranslatorHelper/Index.php");
     }  
 ?>
