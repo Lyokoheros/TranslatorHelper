@@ -2,19 +2,19 @@
 An simple web app, to help translators (both hobbyist from fandoms and maybe even professional ones)
 
 ## Table of content
-* [General info &copy; usage](#General-info-&copy;-usage)
+* [General info and usage](#General-info-and-usage)
 * [Technologies](#Technologies)
 * [Setup](#Setup)
 * [Main Features(Modules)](#Main-Features)
 * [App's Future](#App's-future)
 
-## General info &copy; usage
+## General info and usage
 Being a translator sometimes connects with many repetitive and boring task, which could be automated. This app aims to solve that. Every module deals with different task, which could be helpfull in different translation projects. 
 It works in browser but mainly for providing more user-friendly GUI, but performs most tasks locally. How to use modules will be explained in [Main Features](#Main-Features) section (firstly the very point of the module, what it do, and how to use it).
 
 ## Technologies
-PHP
-XAMPP
+- PHP
+- XAMPP
 
 ## Language version
 For now the app is just in Polish, but next languages may be added in future versions.
